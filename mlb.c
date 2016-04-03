@@ -39,6 +39,7 @@
 #define HLS_SEGMENT_LEN_MARKER				"#EXTINF:"
 #define HLS_DATETIME_MARKER					"#EXT-X-PROGRAM-DATE-TIME:"
 #define HLS_END_MARKER						"#EXT-X-ENDLIST"
+#define HLS_BANDWIDTH_LINE_BEGIN                                "#EXT-X-STREAM-INF:"
 #define HLS_BANDWIDTH_MARKER				"BANDWIDTH="
 #define HLS_AES128_DESC						"METHOD=AES-128"
 #define HLS_HEADER_POS						0
@@ -664,6 +665,7 @@ size_t mlb_master_url_handler(void *buffer, size_t size, size_t nmemb, void *use
 		char * line = NULL;
 		char *bw = NULL;
 		char *st = NULL;
+		char * tmp = NULL;
 		do
 		{
 			line = memfile_getnext_line(m, 1);
@@ -673,13 +675,39 @@ size_t mlb_master_url_handler(void *buffer, size_t size, size_t nmemb, void *use
                           st = strstr(line, HLS_STREAM_INF_MARKER);
                           if (st) {
 				bw = strstr(line, HLS_BANDWIDTH_MARKER);
-				if (bw)
+				if (bw) tmp = strchr(bw, ',');
+				if (tmp)
 				{
+				        *tmp = '\0';
 					char * path = memfile_getnext_line(m, 1);
 					if (path)
 					{
 						bw += strlen(HLS_BANDWIDTH_MARKER);
-						mlb_master_add_stream(master, path, atoi(bw));
+						int i = atoi(bw);
+						switch (i) {
+						case 559938:
+						  i = 450000;
+						  break;
+						case 985571:
+						  i = 800000;
+						  break;
+						case 1425340:
+						  i = 1200000;
+						  break;
+						case 2121091:
+						  i = 1800000;
+						  break;
+						case 2908735:
+						  i = 2500000;
+						  break;
+						case 4023049:
+						  i = 3500000;
+						  break;
+						default:
+						  printf("Unknown bandwidth %d found in line %s\n",
+							 i, line);
+						}
+						mlb_master_add_stream(master, path, i);
 					}
 				}
 				bw = NULL;
