@@ -703,6 +703,9 @@ size_t mlb_master_url_handler(void *buffer, size_t size, size_t nmemb, void *use
 						case 4023049:
 						  i = 3500000;
 						  break;
+						case 5772652:
+						  i = 5000000;
+						  break;
 						default:
 						  printf("Unknown bandwidth %d found in line %s\n",
 							 i, line);
