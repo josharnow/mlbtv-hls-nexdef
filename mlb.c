@@ -482,6 +482,7 @@ void *mlb_refresh_playlists_thread(void *t)
 		}
 	}
 	printf("[MLB] Stream thread exiting\n");
+        exit(0);
 }
 
 
