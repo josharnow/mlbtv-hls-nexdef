@@ -35,6 +35,7 @@
 #define HLS_CFG_LW_CMD						"lw_time"
 #define HLS_START_MARKER					"#EXTM3U"
 #define HLS_KEY_MARKER						"#EXT-X-KEY:"
+#define HLS_STREAM_INF_MARKER                                   "#EXT-X-STREAM-INF"
 #define HLS_SEGMENT_LEN_MARKER				"#EXTINF:"
 #define HLS_DATETIME_MARKER					"#EXT-X-PROGRAM-DATE-TIME:"
 #define HLS_END_MARKER						"#EXT-X-ENDLIST"
@@ -660,12 +661,15 @@ size_t mlb_master_url_handler(void *buffer, size_t size, size_t nmemb, void *use
 	{
 		char * line = NULL;
 		char *bw = NULL;
+		char *st = NULL;
 		do
 		{
 			line = memfile_getnext_line(m, 1);
 
 			if (line)
 			{
+                          st = strstr(line, HLS_STREAM_INF_MARKER);
+                          if (st) {
 				bw = strstr(line, HLS_BANDWIDTH_MARKER);
 				if (bw)
 				{
@@ -677,6 +681,8 @@ size_t mlb_master_url_handler(void *buffer, size_t size, size_t nmemb, void *use
 					}
 				}
 				bw = NULL;
+                          }
+                          st = NULL;
 			}
 			else
 				loop = 0;
