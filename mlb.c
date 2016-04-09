@@ -174,6 +174,7 @@ size_t mlb_get_url_curl(char *url, char **v, char * proxy)
 		char error_buf[CURL_ERROR_SIZE] = {0};
 		do
 		{
+                  curl_easy_setopt(curl_handle, CURLOPT_SSL_VERIFYPEER, 0);
 			if (curl_set_options)
 			{
 				if (proxy && strlen(proxy) > 5)
