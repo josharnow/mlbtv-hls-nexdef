@@ -17,16 +17,6 @@
 #define OUTPUT_STDERR_FD                2
 
 
-static const char *OUTPUT_TYPE_STRINGS[6] =
-{
-	"None - No output",
-	"File",
-	"HTTP",
-	"Raw TCP",
-	"UDP - Unicast",
-	"UDP - Multicast",
-};
-
 struct output_struct
 {
 	char * name;
