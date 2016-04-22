@@ -1,4 +1,4 @@
-CFLAGS=-O2
+CFLAGS=-O2 -Wall
 LIBS=-lm -lcrypto -lpthread -lconfig -lcurl
 OBJECTS=mlb.o utils.o output.o
 

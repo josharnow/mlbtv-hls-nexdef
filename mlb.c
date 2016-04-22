@@ -308,7 +308,7 @@ void mlb_refresh_playlists(MLB_HLS_MASTER_URL * master)
 			}
 */
 			tmp_url = calloc(1, MAX_STR_LEN);
-			sprintf(tmp_url, "%s%s\0", master->base_url, master->streams[i].base_url);
+			sprintf(tmp_url, "%s%s", master->base_url, master->streams[i].base_url);
 //			printf("HMM: %s%s\n", master->base_url, master->streams[i].base_url);
 
 
@@ -1165,9 +1165,9 @@ int mlb_hls_get_and_decrypt(MLB_URL_PASS *p, char *url)
 //		printf("1: %s, 2: %s, 3: %s\n", master->base_url, stream->base_url_media, url);
 
 		if (url[0] == 'h' && url[1] == 't' && url[2] == 't' && url[3] == 'p')
-			sprintf(content_url, "%s\0", url);
+			sprintf(content_url, "%s", url);
 		else
-			sprintf(content_url, "%s%s%s\0", master->base_url, stream->base_url_media, url);
+			sprintf(content_url, "%s%s%s", master->base_url, stream->base_url_media, url);
 
 		if (show_debug)
 		{
@@ -1712,7 +1712,7 @@ int main (int argc, char *argv[])
 											{
 												if (!master->cmd_thread && p.stream->seg_time * master->decrypted_count >= master->args->launch_wait)
 												{
-													sprintf(master->cmd_params, "%s -cache %d %s\0", master->args->launch_cmd, 4*(master->decrypted_size/(p.stream->seg_time * master->decrypted_count)) / 1000, master->args->output.name);
+													sprintf(master->cmd_params, "%s -cache %d %s", master->args->launch_cmd, 4*(master->decrypted_size/(p.stream->seg_time * master->decrypted_count)) / 1000, master->args->output.name);
 													printf("[MLB] Launching.. %s\n", master->cmd_params);
 													pthread_create(&master->cmd_thread, NULL, mlb_cmd_thread, (void*)master);
 												}
