@@ -791,9 +791,7 @@ MLB_HLS_MASTER_URL * mlb_get_master(MLB_OPT_ARGS* args)
 
 			memcpy(ret->b64_decoded, ret->args->base64_uri, len);
 
-			if (ret->b64_decoded[0] == 'h' &&  ret->b64_decoded[1] == 't' &&
-				ret->b64_decoded[2] == 't' &&  ret->b64_decoded[3] == 'p' &&
-				ret->b64_decoded[4] == ':' &&  ret->b64_decoded[5] == '/')
+			if (!strncmp(ret->b64_decoded, "http://", 7))
 			{
 //				printf("DO NOT DECODE MASTER\n");
 				strncpy(ret->master_url, ret->b64_decoded, MAX_STR_LEN);
@@ -1159,7 +1157,7 @@ int mlb_hls_get_and_decrypt(MLB_URL_PASS *p, char *url)
 
 //		printf("1: %s, 2: %s, 3: %s\n", master->base_url, stream->base_url_media, url);
 
-		if (url[0] == 'h' && url[1] == 't' && url[2] == 't' && url[3] == 'p')
+		if (!strncmp(url, "http", 4))
 			sprintf(content_url, "%s", url);
 		else
 			sprintf(content_url, "%s%s%s", master->base_url, stream->base_url_media, url);
