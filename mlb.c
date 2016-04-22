@@ -1498,7 +1498,7 @@ int main (int argc, char *argv[])
 					if (!master->current_seg_line)
 					{
 						if (master->args->start_from_user && master->args->start_from_user < master->start_from_playlist)
-							master->args->start_from_user += 86400;
+							master->args->start_from_user += 86400; /* one day */
 							
 
 
