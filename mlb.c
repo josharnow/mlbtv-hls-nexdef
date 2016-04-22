@@ -620,7 +620,6 @@ void mlb_get_hls_key(MLB_HLS_STREAM_URL *stream, int pos)
 		if (fetched_len > 0)
 		{
 			char * _tmp_key = calloc(1, MAX_STR_LEN);
-			int i;
 			strcpy(_tmp_key, fetched_data);
 			b64decode(_tmp_key);
 
@@ -935,7 +934,6 @@ int mlb_get_bw_from_prio(MLB_HLS_MASTER_URL * master, int prio)
 
 int mlb_master_switch_bw(MLB_HLS_MASTER_URL * master, int down, int bps)
 {
-	int ret = 0;
 //	printf("SWITCH: %d\n", bps);
 	if (master->current_seg_line && !master->args->lock_bandwidth)
 	{
@@ -1248,7 +1246,6 @@ int mlb_hls_get_and_decrypt(MLB_URL_PASS *p, char *url)
 
 void display_usage(char *exe)
 {
-    int i;
     printf("Usage: %s [options] -B <base64> -o <output_file>\n\n", exe );
     printf("Required:\n");
     printf("\t-B, --base64\t\tbase64 url\n");
@@ -1335,7 +1332,6 @@ uint8_t get_opts(int argc, char *const argv[], MLB_OPT_ARGS *opts)
 			case 'c':
 				{
 					config_t cfg;
-					config_setting_t *setting;
 					config_init(&cfg);
 
 					strncpy(opts->cfg_file, optarg, MAX_STR_LEN);
@@ -1591,7 +1587,6 @@ int main (int argc, char *argv[])
 
 				if (master->current_seg_line)
 				{
-					int j;
 					char tmp[MAX_STR_LEN] = {0};
 					MLB_URL_PASS p = {0};
 
