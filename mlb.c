@@ -1153,12 +1153,9 @@ int mlb_hls_get_and_decrypt(MLB_URL_PASS *p, char *url)
 		char content_url[MAX_STR_LEN];
 		int fetched_len = 0;
 		char *fetched_data = NULL;
-		int segtime = 0;
 
 		MLB_HLS_MASTER_URL *master = p->parent;
 		MLB_HLS_STREAM_URL *stream = p->stream;
-
-		segtime = stream->seg_time + 2;
 
 //		printf("1: %s, 2: %s, 3: %s\n", master->base_url, stream->base_url_media, url);
 
