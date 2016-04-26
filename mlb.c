@@ -181,7 +181,7 @@ size_t mlb_get_url_curl(char *url, char **v, char * proxy)
 				if (proxy && strlen(proxy) > 5)
 				{
 					curl_easy_setopt(curl_handle, CURLOPT_PROXY, proxy);
-					if (proxy[0] == 's' && proxy[1] == 'o' && proxy[2] == 'c' && proxy[3] == 'k')
+					if (!strncmp(proxy, "sock", 4))
 					{
 						printf("[MLB] Proxy type: SOCKS\n");
 						curl_easy_setopt(curl_handle, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
@@ -1059,7 +1059,7 @@ void mlb_process_streams(MLB_HLS_STREAM_URL *stream)
 				break;
 
 				default:
-					if (line[0] == '#' && line[1] == 'E' && line[2] == 'X' && line[3] == 'T')
+					if (!strncmp(line, "#EXT", 4))
 					{
 						if (strncmp(line, HLS_END_MARKER, strlen(HLS_END_MARKER)) == 0)
 						{
@@ -1520,14 +1520,11 @@ int main (int argc, char *argv[])
 								for(s=0; s< master->streams[i].line_count; s++)
 								{
 									mlb_stream_getline(&master->streams[i], s, (char*)&tmp_str, MAX_STR_LEN);
-									if (tmp_str[0] == '#' && tmp_str[1] == 'E' && tmp_str[2] =='X' && tmp_str[3] =='T' &&
-											tmp_str[4] =='-' && tmp_str[5] =='X' &&  tmp_str[6] =='-' && tmp_str[7] =='K' &&
-										tmp_str[8] =='E' && tmp_str[9] =='Y' &&  tmp_str[10] ==':') // check if the temp string starts "#EXT-X-KEY:"
+									if (!strncmp(tmp_str, "#EXT-X-KEY:", 11))
 									{
-									k = s;
+										k = s;
 									}
-									if (tmp_str[0] == '#' && tmp_str[1] == 'E' && tmp_str[2] =='X' && tmp_str[3] =='T' &&
-										tmp_str[4] =='I' && tmp_str[5] =='N' &&  tmp_str[6] =='F' && tmp_str[7] ==':')
+									if (!strncmp(tmp_str, "#EXTINF:", 11))
 									{
 										q++;
 										if (q == diff2)
@@ -1614,7 +1611,7 @@ int main (int argc, char *argv[])
 
 							if (mlb_stream_getline(&master->streams[master->current_priority], master->current_seg_line, (char*)&tmp, MAX_STR_LEN) > 0)
 							{
-								if (tmp[0] == '#' && tmp[1] == 'E' && tmp[2] == 'X' && tmp[3] == 'T')
+								if (!strncmp(tmp, "#EXT", 4))
 								{
 									if (strstr(tmp, HLS_KEY_MARKER) != NULL)
 									{
