@@ -33,6 +33,7 @@
 #define HLS_CFG_PROXY						"proxy_addr"
 #define HLS_CFG_PLAYER_CMD					"player_cmd"
 #define HLS_CFG_LW_CMD						"lw_time"
+#define HLS_MARKER_PREFIX					"#EXT"
 #define HLS_START_MARKER					"#EXTM3U"
 #define HLS_KEY_MARKER						"#EXT-X-KEY:"
 #define HLS_STREAM_INF_MARKER                                   "#EXT-X-STREAM-INF"
@@ -1059,7 +1060,7 @@ void mlb_process_streams(MLB_HLS_STREAM_URL *stream)
 				break;
 
 				default:
-					if (!strncmp(line, "#EXT", 4))
+					if (!strncmp(line, HLS_MARKER_PREFIX, strlen(HLS_MARKER_PREFIX)))
 					{
 						if (strncmp(line, HLS_END_MARKER, strlen(HLS_END_MARKER)) == 0)
 						{
@@ -1520,11 +1521,11 @@ int main (int argc, char *argv[])
 								for(s=0; s< master->streams[i].line_count; s++)
 								{
 									mlb_stream_getline(&master->streams[i], s, (char*)&tmp_str, MAX_STR_LEN);
-									if (!strncmp(tmp_str, "#EXT-X-KEY:", 11))
+									if (!strncmp(tmp_str, HLS_KEY_MARKER, strlen(HLS_KEY_MARKER)))
 									{
 										k = s;
 									}
-									if (!strncmp(tmp_str, "#EXTINF:", 11))
+									if (!strncmp(tmp_str, HLS_SEGMENT_LEN_MARKER, strlen(HLS_SEGMENT_LEN_MARKER)))
 									{
 										q++;
 										if (q == diff2)
@@ -1611,7 +1612,7 @@ int main (int argc, char *argv[])
 
 							if (mlb_stream_getline(&master->streams[master->current_priority], master->current_seg_line, (char*)&tmp, MAX_STR_LEN) > 0)
 							{
-								if (!strncmp(tmp, "#EXT", 4))
+								if (!strncmp(tmp, HLS_MARKER_PREFIX, strlen(HLS_MARKER_PREFIX)))
 								{
 									if (strstr(tmp, HLS_KEY_MARKER) != NULL)
 									{
