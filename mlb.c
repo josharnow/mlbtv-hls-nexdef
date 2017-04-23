@@ -1093,14 +1093,18 @@ void mlb_process_streams(MLB_HLS_STREAM_URL *stream)
 								else
 									printf("strptime . ERRORRORORORORO\n");
 
+
 								if (!master->start_from_playlist)
 								{
 									if (t)
 										master->start_from_playlist = t;
 									else
 										master->start_from_playlist = 1;
+                                                                        if(master->args->start_from_user == 0) {
+                                                                          master->args->start_from_user = master->start_from_playlist;
+                                                                        }
 
-									printf("[MLB] Playlist start: %d (specified start: %d)\n", master->start_from_playlist, master->args->start_from_user);
+                                                                        printf("[MLB] Playlist start: %d (specified start: %d)\n", master->start_from_playlist, master->args->start_from_user);
 								}
 							}
 							else if (strncmp(line, HLS_KEY_MARKER, strlen(HLS_KEY_MARKER)) == 0)
