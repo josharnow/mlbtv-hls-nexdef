@@ -219,7 +219,7 @@ size_t mlb_get_url_curl(char *url, char **v, char * proxy)
 				{
 					free(carg.data);
 				}
-				return 0;
+				return -1;
 			}
 		} while (res != 0);
 	}
@@ -1156,7 +1156,8 @@ int mlb_hls_get_and_decrypt(MLB_URL_PASS *p, char *url)
 		char content_url[MAX_STR_LEN];
 		int fetched_len = 0;
 		char *fetched_data = NULL;
-
+		int segtime = 0;
+		int i;
 		MLB_HLS_MASTER_URL *master = p->parent;
 		MLB_HLS_STREAM_URL *stream = p->stream;
 
@@ -1171,8 +1172,13 @@ int mlb_hls_get_and_decrypt(MLB_URL_PASS *p, char *url)
 		{
 			printf("[MLB] [DEBUG] Fetch start: %d\n", stream->seg_time);
 		}
-
-		fetched_len = mlb_get_url(content_url, &fetched_data, master->args->proxy_addr);
+                for (i=0; i < 3; i++) {
+			fetched_len = mlb_get_url(content_url, &fetched_data, master->args->proxy_addr);
+			if (fetched_len != -1) {
+				break;
+			}
+			printf("Failed fetching url %s but will retry\n", content_url);
+                }
 //		printf("Fetching URL (%d): %s\n", fetched_len, content_url);
 
 		if (fetched_len > 0)
